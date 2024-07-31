@@ -1,4 +1,4 @@
-name: Generate JWT
+name: Generator JWT
 
 on:
   schedule:
