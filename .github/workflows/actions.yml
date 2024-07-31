@@ -1,0 +1,50 @@
+name: Generate JWT
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  push:
+    branches:
+      - master
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install requests tempmail-python
+
+      - name: Run updater script
+        run: |
+          python main.py
+
+      - name: Display bearer.txt contents
+        run: |
+          cat bearer.txt || echo "bearer.txt not found"
+
+      - name: Configure Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Commit and push changes
+        run: |
+          git add bearer.txt
+          git commit -m "Update new JWT"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
