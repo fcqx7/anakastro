@@ -1,4 +1,4 @@
-name: Generator JWT
+name: Automation JWT Generator
 
 on:
   schedule:
@@ -26,13 +26,17 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install requests cryptography
+          pip install cryptography
 
       - name: Run updater script
         run: |
-          python main.py
+          python generate.py
+          
+      - name: Display account
+        run: |
+          cat account.txt || echo "account.txt not found"
 
-      - name: Display bearer.txt contents
+      - name: Display bearer
         run: |
           cat bearer.txt || echo "bearer.txt not found"
 
@@ -41,7 +45,15 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
 
-      - name: Commit and push changes
+      - name: Commit and push account changes
+        run: |
+          git add account.txt
+          git commit -m "Update new Account"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit and push bearer changes
         run: |
           git add bearer.txt
           git commit -m "Update new JWT"
