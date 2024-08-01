@@ -2,7 +2,7 @@ name: Generator JWT
 
 on:
   schedule:
-    - cron: '0 * * * *'
+    - cron: '0 0,12 * * *'
   push:
     branches:
       - master
@@ -26,7 +26,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install requests tempmail-python
+          pip install requests cryptography
 
       - name: Run updater script
         run: |
