@@ -1,4 +1,4 @@
-name: Automation JWT Generator
+name: JWT Generator
 
 on:
   schedule:
@@ -34,11 +34,11 @@ jobs:
           
       - name: Display account
         run: |
-          cat account.txt || echo "account.txt not found"
+          cat account.txt
 
       - name: Display bearer
         run: |
-          cat bearer.txt || echo "bearer.txt not found"
+          cat bearer.txt
 
       - name: Configure Git
         run: |
